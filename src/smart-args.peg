@@ -1,0 +1,41 @@
+alpha <- [a-zA-Z]
+digit <- [0-9]
+number <- digit+
+colon <- ':'
+semicolon <- ';'
+comma <- ','
+spaces <- [ \t\n]+
+fatcomma <- '=>'
+leftbracket <- '['
+rightbracket <- ']'
+leftbrace <- '{'
+rightbrace <- '}'
+dollar <- '$'
+string <- (["] (!["] .)* ["]) / (['] (!['] .)* ['])
+plussign <- '+'
+
+packagedefinition <- packageheading spaces? packageform
+packageheading <- 'package'
+packageform <- (alpha / colon)+
+
+sub <- subheading spaces? subname spaces? leftbrace spaces? argsdefinition
+subheading <- 'sub'
+subname <- (alpha / '_')+
+
+argsdefinition <- spaces? (argsheading / argsposheading) spaces? (onearg spaces? comma spaces?)* (onearg spaces?)? comma? spaces? semicolon spaces?
+
+argsheading <- 'args'
+argsposheading <- 'args_pos'
+my <- 'my'
+onearg <- my spaces? variable spaces? fatcomma spaces? argtype
+variable <- dollar (alnumsign)+
+alnumsign <- alpha / digit / underscore
+underscore <- '_'
+simpleargtype <- ('"' type '"') / (['] type ['])
+argtype <- simpleargtype / argtypeobject
+type <- (alpha / colon / leftbracket / rightbracket)+
+argtypeobject <- plussign? leftbrace spaces? (argtypedefinition spaces? comma spaces?)* argtypedefinition spaces? rightbrace
+argtypedefinition <- alpha+ spaces? fatcomma spaces? (string / number / hashref)
+
+hashpair <- alnumsign+ spaces? (fatcomma / comma) spaces? (string / number / hashref)
+hashref <- plussign? spaces? leftbrace spaces? (hashpair spaces? comma spaces?)* spaces? hashpair? spaces? comma? spaces? rightbrace

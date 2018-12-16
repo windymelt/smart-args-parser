@@ -1,0 +1,28 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '(:parse-smart-args) :silent t)
+  )
+
+(defpackage :ros.script.parse-smart-args.3753872731
+  (:use :cl :parse-smart-args))
+(in-package :ros.script.parse-smart-args.3753872731)
+
+(defun main (&rest argv)
+  (load-peg)
+  (let ((filepath (first argv)))
+    (format t "~S~%"
+            (mapcar #'(lambda (pair)
+                        (cons
+                         (car pair)
+                         (handler-case (parse-args-definition (cdr pair))
+                           (error (e) (progn
+                                    (format *error-output* "Parse failed:~%~S~%~%***~%~A~%***~%" (cdr pair) e)
+                                    nil)))))
+                    (with-open-file (s (pathname filepath))
+                      (extract-subs-from-stream s))))))
+;;; vim: set ft=lisp lisp:
