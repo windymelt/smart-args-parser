@@ -1,8 +1,8 @@
-(defpackage parse-smart-args
+(defpackage smart-args-parser
   (:use :cl :cl-ppcre :iterate :esrap-peg)
   (:import-from :alexandria :ends-with)
   (:export :load-peg :extract-subs-from-stream :parse-args-definition))
-(in-package :parse-smart-args)
+(in-package :smart-args-parser)
 
 (defparameter *sub-heading-regex* (ppcre:create-scanner "^sub ([a-zA-Z0-9_]+) \\{"))
 

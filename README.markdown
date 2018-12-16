@@ -1,4 +1,4 @@
-# Parse-Smart-Args
+# Smart-Args-Parser
 
 ## Usage
 

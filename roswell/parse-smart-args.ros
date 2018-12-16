@@ -5,12 +5,12 @@ exec ros -Q -- $0 "$@"
 |#
 (progn ;;init forms
   (ros:ensure-asdf)
-  #+quicklisp(ql:quickload '(:parse-smart-args) :silent t)
+  #+quicklisp(ql:quickload '(:smart-args-parser) :silent t)
   )
 
-(defpackage :ros.script.parse-smart-args.3753872731
-  (:use :cl :parse-smart-args))
-(in-package :ros.script.parse-smart-args.3753872731)
+(defpackage :ros.script.smart-args-parser.3753872731
+  (:use :cl :smart-args-parser))
+(in-package :ros.script.smart-args-parser.3753872731)
 
 (defun main (&rest argv)
   (load-peg)
