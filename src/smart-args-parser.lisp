@@ -131,6 +131,9 @@
 (defun parse-args-definition (str)
   (ast-eval (esrap:parse 'argsdefinition str)))
 
+(defun parse-package-definition (str)
+  (ast-eval (esrap:parse 'packagedefinition str)))
+
 (defun extract-package-definition-from-stream (s)
   (let ((line (read-line s nil :eof nil)))
-    (ast-eval (esrap:parse 'packagedefinition line))))
+    (parse-package-definition line)))
