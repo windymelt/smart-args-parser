@@ -15,14 +15,15 @@ exec ros -Q -- $0 "$@"
 (defun main (&rest argv)
   (load-peg)
   (let ((filepath (first argv)))
-    (format t "~S~%"
-            (mapcar #'(lambda (pair)
-                        (cons
-                         (car pair)
-                         (handler-case (parse-args-definition (cdr pair))
-                           (error (e) (progn
-                                    (format *error-output* "Parse failed:~%~S~%~%***~%~A~%***~%" (cdr pair) e)
-                                    nil)))))
-                    (with-open-file (s (pathname filepath))
+    (with-open-file (s (pathname filepath))
+      (format t "package: ~S~%" (extract-package-definition-from-stream s))
+      (format t "~S~%"
+              (mapcar #'(lambda (pair)
+                          (cons
+                           (car pair)
+                           (handler-case (parse-args-definition (cdr pair))
+                             (error (e) (progn
+                                          (format *error-output* "Parse failed:~%~S~%~%***~%~A~%***~%" (cdr pair) e)
+                                          nil)))))
                       (extract-subs-from-stream s))))))
 ;;; vim: set ft=lisp lisp:
