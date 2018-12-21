@@ -14,9 +14,9 @@ dollar <- '$'
 string <- (["] (!["] .)* ["]) / (['] (!['] .)* ['])
 plussign <- '+'
 
-packagedefinition <- packageheading spaces? packageform
+packagedefinition <- packageheading spaces? packageform spaces? semicolon
 packageheading <- 'package'
-packageform <- (alpha / colon)+
+packageform <- (alpha / colon / digit)+
 
 sub <- subheading spaces? subname spaces? leftbrace spaces? argsdefinition
 subheading <- 'sub'

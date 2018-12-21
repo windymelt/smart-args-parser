@@ -1,7 +1,7 @@
 (defpackage smart-args-parser
   (:use :cl :cl-ppcre :iterate :esrap-peg)
   (:import-from :alexandria :ends-with)
-  (:export :load-peg :extract-subs-from-stream :parse-args-definition))
+  (:export :load-peg :extract-package-definition-from-stream :extract-subs-from-stream :parse-args-definition))
 (in-package :smart-args-parser)
 
 (defparameter *sub-heading-regex* (ppcre:create-scanner "^sub ([a-zA-Z0-9_]+) \\{"))
@@ -124,5 +124,13 @@
                                   (append parsed-hashpairs (list parsed-last-pair))
                                   parsed-hashpairs))))
 
+(def-peg-fun packagedefinition (x)
+             (let ((package-name (cadr (elt x 2))))
+               (cons 'pkg (map 'string #'ast-eval package-name))))
+
 (defun parse-args-definition (str)
   (ast-eval (esrap:parse 'argsdefinition str)))
+
+(defun extract-package-definition-from-stream (s)
+  (let ((line (read-line s nil :eof nil)))
+    (ast-eval (esrap:parse 'packagedefinition line))))

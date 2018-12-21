@@ -84,4 +84,8 @@
                                 (cons "bar" 1)))))))
   )
 
+(subtest "extract-package-definition-from-stream"
+  (is (extract-package-definition-from-stream (make-string-input-stream "package Foo::Bar1;"))
+      (cons 'smart-args-parser::pkg "Foo::Bar1")))
+
 (finalize)
